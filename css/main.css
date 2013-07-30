@@ -1,0 +1,12 @@
+.battleBlock {
+	border:1px solid black;
+	height: 50px;
+	width: 50px;
+	float: left;
+}
+.rows {
+	clear:both;
+}
+.axis {
+	display:none;
+}
