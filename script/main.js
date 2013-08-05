@@ -1,9 +1,9 @@
 /****************************************************************************************
 * TO-DO List
 *
-* 1) Create ships on grid automatically (later allow users to drag and drop ship)
+* 1) Make computer smarter on picks after a hit
 * 2) Use prototypal inheritance to create all ships
-* 3) Make game work correctly 
+* 3) Add 
 *
 *****************************************************************************************/
 
@@ -50,7 +50,6 @@ var battle_box = {
 					this.count--;
 					if(this.count <= 0){
 						console.log("Game Over");
-
 					}
 				}
 			}
@@ -58,17 +57,38 @@ var battle_box = {
 	}
 }
 
+battle_box.gameover.count =  battle_box.ships.length ;
 
 // safe distance from side based on 10x10
 function safe_random_number(num1, num2 = 1) {
 	return Math.round(Math.random() * (1 , (num1-1)))+num2;
 }
 
-
-
-// make sure ships dont overlap
-
-battle_box.gameover.count =  battle_box.ships.length ;
+function computers_turn(){
+	var square = document.getElementById("grid1");
+	var x = safe_random_number(10, 0);
+	var y = safe_random_number(10, 0);
+	var block = square.childNodes[x].childNodes[y]
+	var color = "gray";
+	var active = block.childNodes[2];
+	
+	if(active.innerHTML == 'true'){
+		for (i in battle_box.ships) {
+			for (j in battle_box.ships[i].cell_computer){
+				if ( x == battle_box.ships[i].cell_computer[j].x && y == battle_box.ships[i].cell_computer[j].y ) {
+					color = "red";
+				} 
+				
+			}
+		}
+		block.style.backgroundColor = color;
+		active.innerHTML = "false";
+	} else {
+		// try again		
+		computers_turn();
+	}
+	
+}
 
 var case_test = {
 	test :function (x,y) {
@@ -81,12 +101,11 @@ var case_test = {
 				} 
 			}
 			
-		}		
+		}	
+		computers_turn();	
 		return hit;
 	}
 }
-
-
 
 // Make GUI grid
 function makeGrid(v){ 
@@ -111,6 +130,7 @@ function makeGrid(v){
 	}
 	
   	// load battle boats
+	// TO-DO make sure ships dont overlap
 	for(var k = 0; k < 2; k++) {
 		for(i in battle_box.ships){
 			var plane = safe_random_number(2,0);
@@ -126,16 +146,13 @@ function makeGrid(v){
 						xx = safe_random_number(10);
 					}	
 					yy = start_number + j;
-					cell = { x : xx, y : yy };
-					//console.log("x : "+xx+" - y "+(yy+j));
 				}else{	
 					if(j == 1){
 						yy = safe_random_number(10);
 					}			
-					xx = start_number + j;
-					cell = { x : xx, y : yy };	
-					//console.log("x : "+(xx+j)+" - y "+yy);
+					xx = start_number + j;						
 				}
+				cell = { x : xx, y : yy };
 
 				if(k){
 					battle_box.ships[i].cell_computer.push(cell);
@@ -143,6 +160,7 @@ function makeGrid(v){
 					square.childNodes[xx].childNodes[yy].style.backgroundColor = "green";
 				} else {
 					battle_box.ships[i].cell.push(cell);
+					//console.log("x : "+xx+" - y "+yy);
 				}
 			}
 		}
@@ -163,12 +181,9 @@ $(function(){
 				
 		if(active.innerHTML === 'true' ) {
 			if(case_test.test(x,y)){
-				square.css('background', 'red');
-				console.log("hit");
-				
+				square.css('background', 'red');				
 			} else {
 				square.css('background', 'blue');
-				console.log("miss");
 			}
 			active.innerHTML = "false";
 		}
