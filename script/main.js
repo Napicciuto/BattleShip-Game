@@ -117,10 +117,10 @@ function makeGrid(v){
 		grid.id = "grid"+j;
     	grid.className = "grid";
 
-		for(var i = 0; i <= v; i++){ 
+		for(var i = 0; i < v; i++){ 
 	    	var row = document.createElement("div"); 
 	    	row.className = "rows"; 
-	    	for(var x = 0; x <= v; x++){ 
+	    	for(var x = 0; x < v; x++){ 
 	        	var cell = document.createElement("div"); 
 	        	cell.className = "battleBlock"; 
 	        	cell.innerHTML = "<div class='xAlis axis'>"+i+"</div><div class='yAxis axis'>"+x+"</div><div class='active axis'>true</div>";
@@ -138,17 +138,17 @@ function makeGrid(v){
 			var square = document.getElementById("grid0");
 			var plane = safe_random_number(2,0);
 			var count = battle_box.ships[i].cell_count;
-			var start_number = safe_random_number(10 - count);
+			var start_number = safe_random_number(10 - count,0);
 		 	var xx = 0;
 			var yy = 0;	
 
 			for(j = 1; j <= count; j++){ 
 				// horizontal or vertical
 				if(plane){		
-					if(j == 1){ xx = safe_random_number(10); }	
+					if(j == 1){ xx = safe_random_number(10, 0); }	
 					yy = start_number + j;
 				}else{	
-					if(j == 1){ yy = safe_random_number(10); }			
+					if(j == 1){ yy = safe_random_number(10, 0); }			
 					xx = start_number + j;						
 				}
 				cell = { x : xx, y : yy };
