@@ -64,7 +64,8 @@ function color_block(square, color) {
 }
 
 // safe distance from side based on 10x10
-function safe_random_number(num1, num2 = 1) {
+function safe_random_number(num1, num2) {
+	num2 = num2 || 1;
 	return Math.round(Math.random() * (1 , (num1-1)))+num2;
 }
 
